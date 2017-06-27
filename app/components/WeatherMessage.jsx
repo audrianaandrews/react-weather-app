@@ -16,7 +16,7 @@ var WeatherMessage =  React.createClass({
           <button className={"button "  + (numDays == 1 ? 'active' : '')} onClick={() => this.handleClick(1)}>1 Day</button>
           <button className={"button "  + (numDays == 7 ? 'active' : '')} onClick={() => this.handleClick(7)}>7 Day</button>
         </div>
-        <div className={"allWeather "  + (numDays == 7 ? 'allSeven' : 'justOne')} data-equalizer="">
+        <div className={"allWeather "  + (numDays == 7 ? 'allSeven' : 'justOne')} data-equalizer="" >
           {data}
         </div>
       </div>

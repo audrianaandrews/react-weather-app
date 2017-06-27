@@ -23,30 +23,37 @@ var Weather = React.createClass({
     });
 
     openWeatherMap.getTemp(location, numDays).then(function(data){
-      const IMG_LOCATION = "http://openweathermap.org/img/w/";
+      var weatherData = data.daily.data;
 
-      data = data.map((day, index) => {
+      if(numDays == 1){
+        weatherData = weatherData.slice(0, 1);
+      } else{
+        weatherData = weatherData.slice(0, 6);
+      }
+      var weeklySummary = data.daily.summary;
+
+
+      data = weatherData.map((day, index) => {
         var days = ["Sun","Mon","Tues","Wed","Thurs","Fri","Sat"];
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "Octobor", "November", "December"];
         var date = new Date();
         date.setDate(date.getDate()+index);
         var date = days[date.getDay()]+ ", " + months[date.getMonth()] + " " + date.getDate()+ ", "  + date.getFullYear();
 
-        var temp = day.temp.day;
-        var highTemp = day.temp.max;
-        var lowTemp = day.temp.min;
-        var weatherDesc = day.weather[0].description;
-
-        var imgName = encodeURIComponent(day.weather[0].icon);
-        var imgUrl = `${IMG_LOCATION}${imgName}.png`;
+        var temp = day.apparentTemperatureMax;
+        var highTemp = day.temperatureMax;
+        var lowTemp = day.temperatureMin;
+        var weatherDesc = day.summary;
+        var icon = day.icon.replace(/-/g, "_").toUpperCase();
+        var iconID = icon + index;
 
         return (
-          <div className="weatherContainer" key={index} data-equalizer-watch="">
+          <div className="weatherContainer text-center" key={index} data-equalizer-watch="">
             <p className="date">{date}</p>
             <p className="weatherDesc">{weatherDesc}</p>
-            <p><img src={imgUrl} alt={weatherDesc}/><span className="temp">{temp}&#8451;</span></p><br/>
-            <p className="otherInfo"><b>High: </b>{highTemp}&#8451;</p>
-            <p className="otherInfo"><b>Low: </b>{lowTemp}&#8451;</p>
+            <p className="temp">{temp}&#8451;</p>
+            <p className="otherInfo text-center"><b>High: </b>{highTemp}&#8451;</p>
+            <p className="otherInfo text-center"><b>Low: </b>{lowTemp}&#8451;</p>
           </div>
         );
       });
